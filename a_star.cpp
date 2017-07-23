@@ -53,6 +53,12 @@ list<Node*> AStar::getNeighbours(Node* cnode, Node* grid[Y_LENGTH][X_LENGTH]) {
 	return neighbours;
 }
 
+bool areNeighbors (Node* A, Node* B){
+	if (A == NULL || B == NULL) return false;
+	else if (A->posX == B->posX && A->posY == B->posY) return false;
+	else return (abs(A->posX - B->posX) <= 1 && abs(A->posY - B->posY) <= 1 ) ;
+}
+
 // Outputs the discovered path as a string
 string AStar::getPathString(list<Node*> path) {
 	stringstream outputStream;
@@ -110,7 +116,7 @@ list<Node*> AStar::findPath(Node* world[Y_LENGTH][X_LENGTH], Node* startNode, No
 		for(list<Node*>::iterator it = neighbours.begin(); it != neighbours.end(); it++) {
 			// Step7.1. Check if the current neighbour is already in the closed list; if it is, skip it
 			Node* curNeibor = (*it);
-            if (find(begin(closedSet), end(closedSet), curNeibor) != end(closedSet)) continue;
+            if (std::find(closedSet.begin(), closedSet.end(), curNeibor) != closedSet.end()) continue;
 
 
             // Step7.2. Compute gCost from the start node for the current neighbour
@@ -120,32 +126,26 @@ list<Node*> AStar::findPath(Node* world[Y_LENGTH][X_LENGTH], Node* startNode, No
 			// update gCost, hCost, and fCost values for the neighbour to match the current node
 			// Use getHDistance to get the cost from the current node to the current neighour
 
+            int temGCost = currentNode->gCost + getHDistance(currentNode,curNeibor);
+
             curNeibor->parent = currentNode;
             curNeibor->hCost = getHDistance (curNeibor, endNode);
-            curNeibor->gCost = currentNode->gCost + getHDistance (curNeibor, currentNode);
+            curNeibor->gCost = temGCost;
             curNeibor->fCost = getFCost(curNeibor);
 
-            int temGCost = getHDistance(startNode,curNeibor);
+            for(list<Node*>::iterator it = closedSet.begin(); it != closedSet.end(); it++) {
+				if (areNeighbors((*it),curNeibor)){
+					if ((*it)->gCost < curNeibor->parent->gCost){
+						curNeibor ->parent = (*it);
+						curNeibor ->gCost = getHDistance (curNeibor, (*it)) + (*it)->gCost;
+            			curNeibor ->fCost = getFCost(curNeibor);
+					}
+				}
+			}
 
             //Something is not Right here:
 			/*
-            if (temGCost < curNeibor->gCost){
-                //cout <<"fishiy here "<<endl;
-                list<Node*> temp = getNeighbours(curNeibor, world);
-                int compa = 99999;
-                for(list<Node*>::iterator it = neighbours.begin(); it != neighbours.end(); it++) {
-                    Node* node = (*it);
-                    if (find(begin(closedSet), end(closedSet), node) != end(closedSet)){
-                        //cout <<"found that is part of the closedSet"<<endl;
-                        if (node->gCost < currentNode->gCost && node->gCost < compa){
-                            compa = node->gCost;
-                            //cout <<"YES, IT happened"<<endl;
-                            curNeibor->parent = node;
-                            curNeibor->gCost = node->gCost + getHDistance(curNeibor, node);
-                        }
-                    }
-                }
-            }
+
 			*/
 			//Basically this fail test case 4 at color (4,2) sould go diagonally(directly) to (3,3). However, this is going (4,2)->(3,2) -> (3,3), which in turn result in an additional 10 m distance to be added.
 
