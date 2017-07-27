@@ -1,0 +1,43 @@
+# depslib dependency file v1.0
+1500706266 source:c:\users\eugen\downloads\assignment4\assignment4\ass4\a_star_test.cpp
+	<fstream>
+	<iostream>
+	<sstream>
+	"a_star.hpp"
+
+1500706266 c:\users\eugen\downloads\assignment4\assignment4\ass4\a_star.hpp
+	<list>
+	"node.hpp"
+
+1500706266 c:\users\eugen\downloads\assignment4\assignment4\ass4\node.hpp
+	<iostream>
+
+1500717048 source:c:\users\eugen\downloads\assignment4\assignment4\ass4\a_star.cpp
+	<iostream>
+	<math.h>
+	<algorithm>
+	<string>
+	<sstream>
+	"a_star.hpp"
+
+1500765580 source:c:\users\eugene\documents\codes\esh_a4_140_wra\a_star.cpp
+	<iostream>
+	<math.h>
+	<algorithm>
+	<string>
+	<sstream>
+	"a_star.hpp"
+
+1500765580 c:\users\eugene\documents\codes\esh_a4_140_wra\a_star.hpp
+	<list>
+	"node.hpp"
+
+1500765580 c:\users\eugene\documents\codes\esh_a4_140_wra\node.hpp
+	<iostream>
+
+1500765580 source:c:\users\eugene\documents\codes\esh_a4_140_wra\a_star_test.cpp
+	<fstream>
+	<iostream>
+	<sstream>
+	"a_star.hpp"
+
